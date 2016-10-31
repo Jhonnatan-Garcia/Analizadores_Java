@@ -1,0 +1,69 @@
+package lyaii_analizador_lexico_sintactico_semantico;
+import java.io.*;
+import java_cup.runtime.*;
+import javax.swing.JOptionPane;
+
+
+parser code
+{:
+
+        public static void main(String args[]) throws Exception{
+            
+            //new parser(new Yylex(new FileInputStream(args[0]))).parse();
+            //Reader reader = new BufferedReader(new FileReader("C:\\Users\\Jhonnatan Garcia\\Documents\\LYAII_Analizador_Lexico_Sintactico_Semantico\\src\\lyaii_analizador_lexico_sintactico_semantico\\codigoFuente.txt"));
+            //new parser(new Yylex(System.in)).parse();
+
+        }
+
+
+        public void syntax_error(Symbol s){
+
+            report_error("Error De Sintaxis, Linea: " + (s.right + 1) +
+            " Columna: " + s.left + ". Texto: \"" + s.value + "\"", null);
+            
+            
+        }
+
+
+:}
+
+
+terminal String NUMERAL, INCLUDE, MENOR_QUE, LIBRERIA_IO, LIBRERIA_DLIB, MAYOR_QUE;
+terminal String STD, PYC, INT, MAIN, ABRIR_P, CERRAR_P;
+terminal String ABRIR_LL, CERRAR_LL, COUT, ENDL, RETURN, IDENTIFICADOR, ASIGNACION;
+terminal Integer NUMERO;
+
+non terminal Inicio, Libreria, Metodo, Inicializacion, Retorno, Mensaje, Suma; 
+
+Inicio ::= Inicio Libreria
+           | Libreria
+           ;
+
+Libreria ::= NUMERAL INCLUDE MENOR_QUE LIBRERIA_IO MAYOR_QUE 
+              |   NUMERAL INCLUDE MENOR_QUE LIBRERIA_DLIB MAYOR_QUE 
+              |   Metodo
+              ;
+
+
+Metodo ::= STD PYC
+            | Inicializacion 
+            ;
+
+Inicializacion ::= INT MAIN ABRIR_P CERRAR_P ABRIR_LL Mensaje Suma Retorno CERRAR_LL 
+                        | Mensaje 
+                        ;
+
+Mensaje ::= COUT MENOR_QUE MENOR_QUE IDENTIFICADOR MENOR_QUE MENOR_QUE ENDL PYC 
+                    | Suma 
+                    ;
+
+Suma ::= INT IDENTIFICADOR PYC 
+                    | INT IDENTIFICADOR ASIGNACION NUMERO PYC
+                    | Retorno
+                    ;
+
+Retorno ::= RETURN NUMERO PYC {:JOptionPane.showMessageDialog(null, "Analisis Sintactico Realizado Correctamente"); :};
+                    
+
+
+
